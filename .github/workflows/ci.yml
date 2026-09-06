@@ -48,6 +48,19 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v6.1.0
 
+      - name: Check OIDC claims
+        run: |
+            TOKEN_JSON=$(curl -s \
+            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com")
+
+            ID_TOKEN=$(echo "$TOKEN_JSON" | jq -r '.value')
+
+            PAYLOAD=$(echo "$ID_TOKEN" | cut -d '.' -f2)
+            PAYLOAD="${PAYLOAD}$(printf '%*s' $((4-${#PAYLOAD}%4)) '' | tr ' ' '=')"
+
+            echo "$PAYLOAD" | base64 -d 2>/dev/null | jq '{aud,sub}'
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
