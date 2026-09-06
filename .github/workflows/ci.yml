@@ -48,9 +48,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v6.1.0
 
-      - name: Generate image tag
-        run: SHORT-SHA=${{ github.sha }}
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
