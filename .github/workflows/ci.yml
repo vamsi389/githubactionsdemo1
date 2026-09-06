@@ -46,6 +46,6 @@ jobs:
 
       - name: Build the app
         run: |
-          docker build -t my-python-app:<git-commit-sha> .
+          docker build -t my-python-app:${{ github.sha }} .
           docker image ls
         
