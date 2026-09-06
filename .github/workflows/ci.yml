@@ -34,7 +34,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
+          name: test-results-demo1
+          path: .
 
   build:
     needs: test
